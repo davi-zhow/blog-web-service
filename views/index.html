@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title><%= title %></title>
+</head>
+
+<body>
+	<div>
+		<form id="userForm">
+			<div class="item-line">
+				<label>用户名：</label>
+				<input type="text" name="userName">
+			</div>
+			<div class="item-line">
+				<label>用户姓名：</label>
+				<input type="text" name="realName">
+			</div>
+			<div class="item-line">
+				<label>密码：</label>
+				<input type="password" name="password">
+			</div>
+			<div class="item-line">
+				<label>确认密码：</label>
+				<input type="password" onblur="validConfirmPw">
+			</div>
+			<div class="item-line">
+				<label>联系电话：</label>
+				<input type="text" name="userTel">
+			</div>
+			<div class="item-line">
+				<label>用户头像：</label>
+				<input type="file" name="userPht">
+			</div>
+			<div class="item-line">
+				<button type="button" onclick="addUser"> 提交</button>
+			</div>
+		</form>
+	</div>
+	<script src="/lib/axios.min.js"></script>
+	<script>
+		function addUser() {
+			let els = document.querySelectorAll('#userForm input');
+			let formdata = new FormData();
+			for (let i = 0; i < els.length; i++) {
+				let name = els[i].getAttribute('name');
+				if (!name) continue;
+
+				if (name === 'userPht') {
+					formdata.append(name, els[i].files[0])
+				} else {
+					formdata.append(name, els[i].value)
+				}
+				axios.post('/addUser', formdata)
+			}
+
+			function validConfirmPw() {
+				console.log("密码输入一致")
+			}
+	</script>
+</body>
+
+</html>
